@@ -45,7 +45,7 @@ pipeline {
         }
         stage("Docker build") {
             steps {
-                sh "docker build -t leszko/calculator ."
+                sh "docker build -t localhost:443/calculator ."
             } 
         }
     }
