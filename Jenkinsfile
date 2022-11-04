@@ -43,25 +43,36 @@ pipeline {
                 sh "./gradlew build"
             }
         }
+        stage("Docker info") {
+            steps {
+                sh "docker ps -a"
+            } 
+        }
         stage("Docker build") {
             steps {
-                sh "docker build -t localhost:443/calculator ."
+                sh "docker build -t registry:443/calculator ."
             } 
         }
         stage("Docker login") {
             steps {
-                sh "docker login --username ammar --password azerty12345"
+                sh "docker login registry:443 --username ammar --password azerty12345"
             } 
         }
         stage("Docker push") {
             steps {
-                sh "docker push localhost:443/calculator"
+                sh "docker push registry:443/calculator"
             }
         }
         stage("Deploy to staging") {
             steps {
-                sh "docker run -d --rm -p 8765:8080 --name calculator localhost:443/calculator"
+                sh "docker run -d --rm -p 8765:8080 --name calculator registry:443/calculator"
             } 
+        }
+        stage("Acceptance test") {
+            steps {
+                sleep 60
+                sh "chmod +x acceptance_test.sh && ./acceptance_test.sh"
+            }
         }
     }
     post {
