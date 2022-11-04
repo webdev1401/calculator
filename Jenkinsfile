@@ -41,7 +41,7 @@ pipeline {
     }
     post {
         always {
-            mail to: 'team@company.com',
+            mail to: 'webdev@prototyp.fr',
             subject: "Completed Pipeline: ${currentBuild.fullDisplayName}",
             body: "Your build completed, please check: ${env.BUILD_URL}"
         }
